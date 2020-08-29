@@ -13,8 +13,8 @@
             [sr_err_msg(SR_UNKNOWN_ERROR_CODE)] = "Unknown error!\n",
             #if defined(SR_WINDOW_USE_XCB)
                 [sr_err_msg(SR_WINDOW_XCB_CONNECT_ERROR_CODE)] = "Can`t connect to XOrg Server using XCB!\n",
-            #elif defined(SR_WINDOW_USE_WAYLAND)
-                [sr_err_msg(SR_WINDOW_WAYLAND_CONNECT_ERROR_CODE)] = "Can`t connect to Wayland Server!\n",
+            #else
+                [sr_err_msg(SR_WINDOW_WINAPI_CREATE_ERROR_CODE)] = "Can`t create WinAPI window!\n",
             #endif
             [sr_err_msg(SR_THREAD_CREATE_ERROR_CODE)] = "Can`t create new thread!\n",
         };
@@ -22,7 +22,7 @@
         va_list error_args;
         va_start(error_args, error_code);
 
-        vdprintf(STDERR_FILENO, error_messages[sr_err_msg(error_code)], error_args);
+        vfprintf(stderr, error_messages[sr_err_msg(error_code)], error_args);
 
         va_end(error_args);
         exit(error_code);

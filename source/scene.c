@@ -121,5 +121,5 @@ inline void sr_scene_update(register sr_scene_t * restrict scene) {
 }
 
 void sr_scene_destroy(const register sr_scene_t * restrict scene) {
-    free(scene->objects);
+    _mm_free(scene->objects);
 }

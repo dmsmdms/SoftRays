@@ -3,15 +3,12 @@
 #include <scene.h>
 #include <thread.h>
 
-#if defined(SR_WINDOW_USE_XCB)
-    typedef struct {
-        uint8_t blue;
-        uint8_t green;
-        uint8_t red;
-        uint8_t alpha;
-    } sr_pixel_t;
-#elif defined(SR_WINDOW_USE_WAYLAND)
-#endif
+typedef struct {
+    uint8_t blue;
+    uint8_t green;
+    uint8_t red;
+    uint8_t alpha;
+} sr_pixel_t;
 
 typedef struct {
     sr_pixel_t * pixels;

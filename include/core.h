@@ -16,8 +16,8 @@ typedef enum {
 
     #if defined(SR_WINDOW_USE_XCB)
         SR_WINDOW_XCB_CONNECT_ERROR_CODE,
-    #elif defined(SR_WINDOW_USE_WAYLAND)
-        SR_WINDOW_WAYLAND_CONNECT_ERROR_CODE,
+    #else
+        SR_WINDOW_WINAPI_CREATE_ERROR_CODE,
     #endif
 
     SR_THREAD_CREATE_ERROR_CODE,

@@ -13,7 +13,6 @@ inline void sr_renderer_create(register sr_renderer_t * restrict renderer, regis
     renderer->width = width;
     renderer->height = height;
     renderer->pixels_size = width * height * sizeof(sr_pixel_t);
-    renderer->pixels = malloc(renderer->pixels_size);
 
     sr_scene_create(&renderer->scene);
 }
@@ -23,7 +22,6 @@ inline void sr_renderer_set_sizes(register sr_renderer_t * restrict renderer, re
     renderer->width = width;
     renderer->height = height;
     renderer->pixels_size = width * height * sizeof(sr_pixel_t);
-    renderer->pixels = realloc(renderer->pixels, renderer->pixels_size);
 }
 
 SR_INLINE sr_pixel_t sr_color_normalize(register __m128 pixel_color) {
@@ -102,5 +100,4 @@ inline void sr_renderer_draw(register sr_renderer_t * restrict renderer) {
 
 inline void sr_renderer_destroy(register sr_renderer_t * restrict renderer) {
     sr_scene_destroy(&renderer->scene);
-    free(renderer->pixels);
 }
