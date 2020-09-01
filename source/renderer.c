@@ -8,6 +8,11 @@
     #define SR_THREAD_QUANTITY 4
 #endif
 
+enum {
+    SR_COLOR_SEQUENCE = (offsetof(sr_pixel_t, red) << 0) + (offsetof(sr_pixel_t, green) << 2)
+                      + (offsetof(sr_pixel_t, blue) << 4) + (offsetof(sr_pixel_t, alpha) << 6),
+};
+
 inline void sr_renderer_create(register sr_renderer_t * restrict renderer, register const uint16_t width,
                                register const uint16_t height) {
     renderer->width = width;
@@ -27,22 +32,12 @@ inline void sr_renderer_set_sizes(register sr_renderer_t * restrict renderer, re
 SR_INLINE sr_pixel_t sr_color_normalize(register __m128 pixel_color) {
     union {
         __m64 sse;
-        struct {
-            uint8_t red;
-            uint8_t green;
-            uint8_t blue;
-            uint8_t alpha;
-        };
+        sr_pixel_t pixel;
     } result_color;
 
-    result_color.sse = _mm_packs_pu16(_mm_cvtps_pi16(_mm_mul_ps(pixel_color, _mm_set_ps1(255))), _mm_setzero_si64());
-
-    return (sr_pixel_t) {
-        .red = result_color.red,
-        .green = result_color.green,
-        .blue = result_color.blue,
-        .alpha = result_color.alpha,
-    };
+    result_color.sse = _mm_packs_pu16(_mm_shuffle_pi16(_mm_cvtps_pi16(_mm_mul_ps(pixel_color, _mm_set_ps1(255))), SR_COLOR_SEQUENCE),
+                                      _mm_setzero_si64());
+    return result_color.pixel;
 }
 
 __m128 sr_trace_ray(register sr_renderer_t * restrict renderer, register __m128 ray_vec,
